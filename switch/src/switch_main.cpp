@@ -613,7 +613,9 @@ int main(int argc, char** argv) {
     // Development builds write the end-of-run report (untranslated call targets, device
     // counters). A release leaves it out: building it took about a minute after quitting, even
     // when it was not written to a file, so a release also skips building it (--quick-exit).
-    g_args.insert(g_args.begin() + 7, {"--report", "crazytaxi_report.txt"});
+    // Appended, never inserted at a fixed index: switch-test1 inserted it between --vmu and its
+    // file name, and the launcher stopped at once on the "unknown option".
+    g_args.insert(g_args.end(), {"--report", "crazytaxi_report.txt"});
 #else
     g_args.push_back("--quick-exit");
 #endif

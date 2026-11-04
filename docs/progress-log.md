@@ -2,6 +2,15 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-03: switch-test1 did not start; switch-test2
+
+- switch-test1 stopped before the game: the launcher printed its usage and returned 2
+  ("unknown option: crazytaxi_report.txt"). Cause: switch_main.cpp inserted `--report` at a
+  fixed index 7, which with Crazy Taxi's argument list fell between `--vmu` and its file name.
+  Fix: append it. Claude's porting bug, not a runtime problem.
+- switch-test2: 3 build steps, sha256
+  6bd6f8b08c4b273fa657573b482a9694a3616fefc1739ac2044ca69bc9dbe880.
+
 ## 2026-11-03: Switch layer, first NRO (switch-test1)
 
 - Switch toolchain: ghcr.io/danfromtico/switch-dev-legacy-vulkan run under docker in the cloud,
