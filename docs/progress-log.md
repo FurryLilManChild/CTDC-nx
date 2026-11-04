@@ -22,6 +22,9 @@ Newest first. One entry per session, with evidence: what broke, the cause, the f
   6b56ac4a53c088896065a16a5f71a86dce7745d24745c0e8f831ea36433e8330. Both and release_notes.md in
   C:\CTDC-nx\out\release\, zip hash verified there. ELF kept as out/crazytaxi-switch-0.5.0.elf.
 - README rewritten for the release. Next: clean-install test on Mark's Switch.
+- Clean-install test on Mark's Switch: passed (Mark, 2026-11-04). Its logs were not copied over;
+  the switchlogs folder still holds the coverage run. Next: Mark makes the repo public and
+  publishes v0.5.0 with the zip and release_notes.md.
 
 ## 2026-11-04: coverage run 1 (switch-test10)
 
