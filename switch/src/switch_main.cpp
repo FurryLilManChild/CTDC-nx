@@ -592,14 +592,15 @@ int main(int argc, char** argv) {
         std::printf("[switch] thread %s on core %d%s\n", name, core, R_FAILED(rc) ? " (refused)" : "");
     };
 #ifndef CTDC_RELEASE
-    // Development builds: the first run starts with the CPU at 1785 MHz. A release starts with
-    // everything at the system's own clocks and the per-triangle translucency (PortOptions'
-    // defaults), which hold full speed in play (switch-test27/28).
+    // Development builds: the first run starts with the CPU at 1224 MHz, the smallest step above
+    // the system clock, which holds about full speed in play (switch-test10: 0.96x to 1.00x; stock
+    // is about 0.90x in heavy play). A release starts with everything at PortOptions' defaults
+    // (the system's own clocks); what a release should default to is still open.
     if (!exists("sdmc:/switch/crazytaxi/crazytaxi_options.txt")) {
         if (FILE* f = std::fopen("sdmc:/switch/crazytaxi/crazytaxi_options.txt", "wb")) {
-            std::fputs("CPU_MHZ=1785\n", f);
+            std::fputs("CPU_MHZ=1224\n", f);
             std::fclose(f);
-            std::printf("[switch] first run: options start with the CPU at 1785 MHz\n");
+            std::printf("[switch] first run: options start with the CPU at 1224 MHz\n");
         }
     }
 #endif

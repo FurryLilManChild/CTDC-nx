@@ -2,6 +2,16 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: performance paused; coverage testing next
+
+- Mark: move on to coverage testing (stock about 0.90x in heavy play, 1224 MHz about full
+  speed). Development builds' first run now writes CPU_MHZ=1224 (was 1785); it applies only when
+  crazytaxi_options.txt does not exist yet, so the current SD card keeps its saved setting.
+- Coverage runs use switch-test10 (no new build). Not emulated, expected: Jump Pack vibration
+  (the maple bus has no vibration device), Rally Wheel.
+- Remaining stock candidates, if resumed: pair memory accesses as one check, single-precision
+  FTRV, TA and store-queue path copies, present off the game thread.
+
 ## 2026-11-04: switch-test10 results
 
 - Log matched to test10 by module size (0x4559000).
