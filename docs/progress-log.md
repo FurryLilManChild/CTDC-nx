@@ -2,6 +2,20 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: switch-test8 results
+
+- Log matched to test8 by module size (0x244F000, about 38 MB); the previous log was test7
+  (0x2130000).
+- Stock (1020 MHz), stretches with the game thread at 90% or more: test7 0.63x to 0.75x (about
+  0.68x average), test8 0.67x to 0.89x (about 0.79x average), about 15% faster (different parts
+  of a round, so approximate). Early in the round test8 held 0.96x to 0.98x at stock.
+- 1785 MHz: 1.00x with the game thread 68 to 78% busy; one dip to 0.67x.
+- Port menu opened twice in play, no crash (test7's fix). The crash file in switchlogs is test6's.
+- Profile, slow stretches (13,801 samples, test8 ELF): guest memory access inline (fast_area, gld,
+  gst, gld_pair) about 36%, TA and store-queue path (Ta::feed, sq_flush, memcpy, resolve, find)
+  about 10%, FP helpers (ftrv, get_dr, fmov_pair_store, sqrt) about 7%, svcSendSyncRequest 4.3%.
+- .gitmodules: dream-recomp ignore = dirty (the build applies the patch set in the submodule tree).
+
 ## 2026-11-04: stock clocks, step 2 (switch-test9)
 
 - Patch 0029, FP-mode copies (translator EmitOptions::fp_mode_copies, on by default,
