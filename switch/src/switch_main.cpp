@@ -591,11 +591,9 @@ int main(int argc, char** argv) {
         const Result rc = svcSetThreadCoreMask(CUR_THREAD_HANDLE, core, 1u << core);
         std::printf("[switch] thread %s on core %d%s\n", name, core, R_FAILED(rc) ? " (refused)" : "");
     };
-#ifndef CTDC_RELEASE
-    // Development builds: the first run starts with the CPU at 1224 MHz, the smallest step above
-    // the system clock, which holds about full speed in play (switch-test10: 0.96x to 1.00x; stock
-    // is about 0.90x in heavy play). A release starts with everything at PortOptions' defaults
-    // (the system's own clocks); what a release should default to is still open.
+    // The first run starts with the CPU at 1224 MHz, the smallest step above the system clock,
+    // which holds about full speed in play (switch-test10: 0.96x to 1.00x; stock is about 0.90x in
+    // heavy play). Releases too (Mark, 0.5.0). The port menu can set it back to the system clock.
     if (!exists("sdmc:/switch/crazytaxi/crazytaxi_options.txt")) {
         if (FILE* f = std::fopen("sdmc:/switch/crazytaxi/crazytaxi_options.txt", "wb")) {
             std::fputs("CPU_MHZ=1224\n", f);
@@ -603,7 +601,6 @@ int main(int argc, char** argv) {
             std::printf("[switch] first run: options start with the CPU at 1224 MHz\n");
         }
     }
-#endif
 
     g_args = {"crazytaxi", "--config", "crazytaxi.toml", "--window", "--boot-sr", "0x600000F1",
               "--vmu", "save/vmu_A1.bin", "--options", "crazytaxi_options.txt",

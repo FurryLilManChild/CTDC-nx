@@ -2,6 +2,27 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: release 0.5.0 candidate
+
+- Mark's calls: version 0.5.0, a fresh install starts at 1224 MHz (releases too), Switch only for
+  now, and the dev interpreter stays in 0.5.0 for the two once-per-session untranslated spots
+  (0xAC005990, a copied routine called through its uncached alias from 0x0C00456E; and
+  0x8C00FA20, inside the interrupt stub, the spot that faulted in switch-test3 when given an
+  entry and that dream-recomp's docs/crazytaxi-divergence.md leaves open). A deviation from
+  dream-recomp's "no interpreter in release" rule, noted in the README's known issues.
+- `RELEASE=1 ./switch/docker_build.sh`: CTDC_RELEASE (no report, no profiler, --quick-exit);
+  only switch_main.cpp changes, 3 steps on top of a development build. CTDC_VERSION is now a plain
+  CMake variable: as a cache entry the existing build directory kept 0.1.0 (caught by checking the
+  NRO's strings before sending).
+- Checked: renderer strings present, no profiler or report file name in the NRO, 0.5.0 in it,
+  launcher arguments as in the coverage run plus --quick-exit.
+- CTDC-nx-0.5.0.zip (switch/crazytaxi/: NRO, toml with SD paths, README.txt, COPYING.txt,
+  disc/PUT_YOUR_DISC_HERE.txt), sha256
+  e80f15d4bcde51e44d16bdfd9cebc120f7e6ee82b9dbab24ad53b49a7abb52b2; NRO 71,965,652 bytes, sha256
+  6b56ac4a53c088896065a16a5f71a86dce7745d24745c0e8f831ea36433e8330. Both and release_notes.md in
+  C:\CTDC-nx\out\release\, zip hash verified there. ELF kept as out/crazytaxi-switch-0.5.0.elf.
+- README rewritten for the release. Next: clean-install test on Mark's Switch.
+
 ## 2026-11-04: coverage run 1 (switch-test10)
 
 - Mark ran the full checklist (Arcade and Original with every rule, Crazy Box, Options, Save &

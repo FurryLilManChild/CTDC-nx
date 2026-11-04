@@ -14,12 +14,15 @@
 # Both are what ghcr.io/danfromtico/switch-dev-legacy-vulkan (MIT) holds; switch/docker_build.sh
 # runs this script inside that image.
 #   JOBS        parallel compile jobs (default: by free memory, at most nproc)
+#   RELEASE     1 builds a release (CTDC_RELEASE: no end-of-run report, no profiler, quick exit);
+#               anything else a development build. Only the launcher's own unit changes.
 #   PARTS       translation units the game's C++ is split into (default 24; 8 ran out of memory in the cloud once FP-mode copies made the code 2.8x larger)
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export DEVKITPRO="${DEVKITPRO:-/opt/devkitpro}"
 NVK_SDK="${NVK_SDK:-$DEVKITPRO/portlibs/switch}"
 PARTS="${PARTS:-24}"
+if [ "${RELEASE:-0}" = 1 ]; then RELEASE_FLAG=ON; else RELEASE_FLAG=OFF; fi
 HOST="$REPO/out/build-host"
 BUILD="$REPO/out/build-switch"
 SD="$REPO/out/sd/switch/crazytaxi"
@@ -65,12 +68,13 @@ cmake -S "$REPO" -B "$BUILD" -G Ninja \
     -DCMAKE_TOOLCHAIN_FILE="$DEVKITPRO/cmake/Switch.cmake" \
     -DCMAKE_BUILD_TYPE=Release \
     -DDREAM_DEV_INTERPRETER=ON -DDREAM_BUILD_TESTS=OFF -DDREAM_WERROR=OFF \
-    -DDREAM_TRANSLATE_PARTS="$PARTS" \
+    -DDREAM_TRANSLATE_PARTS="$PARTS" -DCTDC_RELEASE="$RELEASE_FLAG" \
     -DDREAM_HOST_TRANSLATE="$HOST/translator/dream-translate" \
     -DNVK_SDK="$NVK_SDK" >/dev/null
 # A launcher built without the renderer stops on the Switch at once (switch-test2): refuse here.
 grep -q '^DREAM_GLSLC:FILEPATH=.*NOTFOUND' "$BUILD/CMakeCache.txt" && fail "no glslc: the renderer would be left out"
 grep -q '^DREAM_RENDERER:BOOL=ON' "$BUILD/CMakeCache.txt" || fail "the renderer is off"
+echo "release build: $RELEASE_FLAG"
 ninja -C "$BUILD" -j"$JOBS" crazytaxi_boot_nro
 
 mkdir -p "$SD"

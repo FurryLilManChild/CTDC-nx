@@ -32,8 +32,10 @@ if(NINTENDO_SWITCH)
   # A cache in front of libgcc's FDE search for C++ exception unwinding (SA-nx switch-test28,
   # switch_main.cpp's __wrap__Unwind_Find_FDE).
   target_link_options(crazytaxi_boot PRIVATE -Wl,--wrap=_Unwind_Find_FDE)
-  set(CTDC_VERSION "0.1.0" CACHE STRING "Version shown in the homebrew menu")
-  # A release: no end-of-run report, no profiler, stock clocks on the first run (switch_main.cpp).
+  # Version shown in the homebrew menu. A plain variable, not a cache entry: a cached one kept an
+  # existing build directory at its old version (0.5.0 went out reading 0.1.0 in a first build).
+  set(CTDC_VERSION "0.5.0")
+  # A release: no end-of-run report, no profiler, quick exit (switch_main.cpp).
   option(CTDC_RELEASE "Build the Switch launcher as a release" OFF)
   if(CTDC_RELEASE)
     set_source_files_properties(${CMAKE_SOURCE_DIR}/switch/src/switch_main.cpp

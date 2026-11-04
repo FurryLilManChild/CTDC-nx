@@ -22,5 +22,5 @@ if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
     docker commit ctdc-glslc "$IMAGE" >/dev/null
     docker rm ctdc-glslc >/dev/null
 fi
-exec docker run --rm -v "$REPO:$REPO" -w "$REPO" -e JOBS -e PARTS "$IMAGE" \
+exec docker run --rm -v "$REPO:$REPO" -w "$REPO" -e JOBS -e PARTS -e RELEASE "$IMAGE" \
     bash -c "git config --global --add safe.directory '*' && bash switch/build.sh"
