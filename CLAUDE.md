@@ -52,9 +52,21 @@ games/crazytaxi/       crazytaxi.toml (config, committed), CMakeLists.txt, extra
 games/crazytaxi2/      extracted/ only for now (ignored); configured after Crazy Taxi plays
 assets/                Mark's CHDs (ignored)
 tools/extract_resumable.py   disc extraction in passes (the bridge's time limit)
-tools/win/             setup_pc, build_pc, boot_test, play, trace_run (-Game crazytaxi2 later)
+tools/win/             setup_pc, build_pc, boot_test, play, trace_run, stage_switch (-Game)
+switch/                build.sh, docker_build.sh, src/switch_main.cpp, egl_stubs.c, icon.jpg
 docs/progress-log.md   newest first, one entry per session with evidence
 ```
+
+## Switch builds (cloud)
+
+`switch/docker_build.sh` runs `switch/build.sh` inside `ghcr.io/danfromtico/switch-dev-legacy-vulkan`
+(MIT, Mark's OK 2026-11-03): devkitPro's Linux toolchain (devkitA64 GCC 15.2, libnx, switch-sdl2)
+and NVK in `/opt/devkitpro/portlibs/switch`. No Wine. Start `dockerd` first if `docker info`
+fails. The cloud needs `games/crazytaxi/extracted/fs/1ST_READ.BIN` (stage it from Mark's PC) and
+`git -C dream-recomp submodule update --init --recursive`. The first build was 89 steps.
+Deliver the NRO and toml to `C:\CTDC-nx\out\sd\switch\crazytaxi\` through the bridge; the
+disc, 1ST_READ.BIN and the memory card can be copied there on the bridge too (or by
+`tools\win\stage_switch.ps1`). Keep `out/crazytaxi-switch.elf` of every build sent (crash offsets).
 
 ## The loop (PC phase)
 

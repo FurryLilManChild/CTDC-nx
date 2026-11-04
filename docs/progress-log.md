@@ -2,6 +2,18 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-03: Switch layer, first NRO (switch-test1)
+
+- Switch toolchain: ghcr.io/danfromtico/switch-dev-legacy-vulkan run under docker in the cloud,
+  in place of SA-nx's Wine copy of devkitPro. Had everything: devkitA64 15.2, libnx, SDL2, NVK.
+- SA-nx's `switch/src/switch_main.cpp` and `egl_stubs.c` ported: SD folder
+  `sdmc:/switch/crazytaxi/`, names, a plain CTDC icon (no Sega art). Sonic's `--idle-skip` and
+  `--play-modules` removed. Patch 0025 moves dream-recomp's own SD paths (options, bindings,
+  pipeline cache) to the crazytaxi folder.
+- switch-test1: 89 build steps, NRO 19,270,612 bytes, sha256
+  385144e70d192089544583ac38d62cefcff0ff0879ac9f3514a8823a21182316. Development build: first run
+  writes CPU_MHZ=1785, profiler and end-of-run report on.
+
 ## 2026-11-03: play test 2, smooth; ready for the Switch
 
 - Low-latency pacing: 59.4 to 59.9 fps shown in play at 0.97x to 1.00x, every rendered frame
