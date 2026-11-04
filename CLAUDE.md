@@ -61,8 +61,9 @@ docs/progress-log.md   newest first, one entry per session with evidence
 
 `switch/docker_build.sh` runs `switch/build.sh` inside `ghcr.io/danfromtico/switch-dev-legacy-vulkan`
 (MIT, Mark's OK 2026-11-03): devkitPro's Linux toolchain (devkitA64 GCC 15.2, libnx, switch-sdl2)
-and NVK in `/opt/devkitpro/portlibs/switch`. No Wine. Start `dockerd` first if `docker info`
-fails. The cloud needs `games/crazytaxi/extracted/fs/1ST_READ.BIN` (stage it from Mark's PC) and
+and NVK in `/opt/devkitpro/portlibs/switch`, plus Debian's glslc added in a local image
+(`ctdc-nx/switch-dev:glslc`; without glslc the renderer is silently left out). No Wine. The script
+starts `dockerd` when it is not running. The cloud needs `games/crazytaxi/extracted/fs/1ST_READ.BIN` (stage it from Mark's PC) and
 `git -C dream-recomp submodule update --init --recursive`. The first build was 89 steps.
 Deliver the NRO and toml to `C:\CTDC-nx\out\sd\switch\crazytaxi\` through the bridge; the
 disc, 1ST_READ.BIN and the memory card can be copied there on the bridge too (or by
@@ -70,7 +71,9 @@ disc, 1ST_READ.BIN and the memory card can be copied there on the bridge too (or
 After every delivery, check the NRO's sha256 on Mark's PC through the bridge. switch-test2's
 first delivery (device_commit_files from the same staged path as test1) reported "written" but
 left test1's file in place, and Mark tested the old build. Stage each build under a new name
-(`crazytaxi-testN.nro`), commit it to `out\sd\switch\testN\`, verify, then copy it over.
+(`crazytaxi-testN.nro`), commit it to `out\sd\switch\testN\` (large files: SendUserFile first, then commit by its
+fileUuid), verify, then copy it over. A Switch NRO with the renderer is about 34 MB; 19 MB means
+it was left out.
 
 ## The loop (PC phase)
 

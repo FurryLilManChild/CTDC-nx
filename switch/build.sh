@@ -66,6 +66,9 @@ cmake -S "$REPO" -B "$BUILD" -G Ninja \
     -DDREAM_TRANSLATE_PARTS="$PARTS" \
     -DDREAM_HOST_TRANSLATE="$HOST/translator/dream-translate" \
     -DNVK_SDK="$NVK_SDK" >/dev/null
+# A launcher built without the renderer stops on the Switch at once (switch-test2): refuse here.
+grep -q '^DREAM_GLSLC:FILEPATH=.*NOTFOUND' "$BUILD/CMakeCache.txt" && fail "no glslc: the renderer would be left out"
+grep -q '^DREAM_RENDERER:BOOL=ON' "$BUILD/CMakeCache.txt" || fail "the renderer is off"
 ninja -C "$BUILD" -j"$JOBS" crazytaxi_boot_nro
 
 mkdir -p "$SD"

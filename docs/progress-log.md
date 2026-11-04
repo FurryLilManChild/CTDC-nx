@@ -2,6 +2,17 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-03: switch-test2 had no renderer; switch-test3
+
+- switch-test2 started the launcher with the right arguments, then stopped: "this build has no
+  renderer". The toolchain image has no glslc (the build machine's shader compiler), and
+  dream-recomp's CMake leaves the renderer out without one instead of failing.
+- Fix: `switch/docker_build.sh` builds a local image with Debian's glslc on top (once), and
+  `switch/build.sh` refuses to build when glslc is missing or the renderer is off. It also starts
+  dockerd when the cloud machine has stopped it.
+- switch-test3: 56 steps, NRO 34,053,076 bytes (test1 and 2 were 19 MB: no renderer), sha256
+  093ff0a8d3cca39eb3a8ffeb74477343530b23ecdb5e54474ac38add8f3dcb3c, verified on Mark's PC.
+
 ## 2026-11-03: switch-test1 did not start; switch-test2
 
 - switch-test1 stopped before the game: the launcher printed its usage and returned 2
