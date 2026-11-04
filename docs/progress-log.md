@@ -2,6 +2,32 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: stock clocks, step 3 (switch-test10)
+
+- Patch 0030, two translator changes, both on by default:
+  - FP mode through delay-slot entries. A conditional branch into another branch's delay slot
+    (the `_skip` path) gave the block after the slot no mode, so it and everything reached only
+    through it stayed unknown. In Crazy Taxi that was the whole vertex loop (fn_0c081200: `bf` at
+    0x0c081204 into the slot of the `bra` at 0x0c081206), so test9's copies of it still tested
+    FPSCR at every FP instruction (33 tests per copy, now 3). The slot copy on that path is now
+    also lowered in the entering mode: it used the owning branch's, which is wrong when the two
+    differ (latent; not the case in Crazy Taxi, where both are the entry mode).
+  - FR0..FR15 in host locals (EmitOptions::fp_locals, `--no-fp-locals`), written back and
+    reloaded at the same points as the general registers plus FRCHG and FPSCR loads. Pair moves,
+    DR arithmetic, FTRV, FIPR and FSCA work on the locals through helpers computing exactly what
+    the Ctx versions do (ops.h). A body whose FP references are fewer than its write-back cost
+    (calls and returns times the registers it names) goes back to the context. Crazy Taxi:
+    1,228 bodies keep FP locals, the vertex loop's copies among them.
+- Tests: new program p15_slotfp (hand-assembled: branch into a delay slot under two SZ modes).
+  translator.fp_mode_copies now compares the default build against two variants (no copies, no
+  FP locals) for p5, p7 and p15 in all four PR/SZ entry modes: 32 comparisons, all identical.
+  Putting the old slot lowering back makes 4 of them differ. dream_emit_tests and the translator
+  unit tests pass (dcdisc.pytest skips here: no pycdlib in the cloud workspace).
+- Non-local returns (2.1% unwinding in test9's profile): the game's context restore
+  (fn_0c0884ec, reached from fn_0c1708a0 and fn_0c17085e) throws on every task switch. The FDE
+  cache already exists (switch_main.cpp); avoiding the throw needs another return path through
+  every translated frame. Left out.
+
 ## 2026-11-04: switch-test9 results
 
 - Log matched to test9 by module size (0x4506000, about 72 MB).
