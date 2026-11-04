@@ -2,6 +2,21 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: switch-test6 full speed at 1785 MHz; menu crash; switch-test7
+
+- switch-test6 at 1785 MHz: 58.8 to 60.1 fps shown at 0.98x to 1.00x through most of play
+  (two dips: 0.85x and 0.68x). Mark: "pretty much full speed". Stock (1020 MHz this run): 36 to
+  45 fps, 0.63x to 0.75x. GPU 1.7 to 1.9 ms a render; render thread 30 to 42% busy.
+- Crash after closing the port menu (CPU set back to 1785) and opening it again at once: data
+  abort (far 0x60) in Mesa's end_subpass under vk_common_CmdEndRenderPass2 (test6 ELF, module
+  +0x1129244). Cause: the no-wait decision is made at the top of present(), but the menu opens
+  later in the same present (pump_menu), and a menu composites through the CPU path, reading
+  the offscreen target while its render was still on the render thread.
+- Patch 0028: after pump_menu, a present that skipped the wait waits if a menu is open or the
+  game is paused. Pipeline-cache saves, screenshots and captures wait for the render first too.
+- switch-test7: 79 steps, sha256 583837eded4306e8bb568679892e969014d3873b22edf51d48e4e46ecd2b245b,
+  renderer in, verified on Mark's PC.
+
 ## 2026-11-04: switch-test5 results; switch-test6
 
 - switch-test5: the idle skip works, skipping 46 to 76% of guest time in play (about half).
