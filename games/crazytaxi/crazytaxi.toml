@@ -23,5 +23,87 @@ entry = 0x8C010000           # the first instruction
 
 # Addresses discovery does not reach, and regions the program copies and runs elsewhere, both go
 # here. Run the launcher with --suggest-config FILE and it writes them for you.
-# [functions]
-# extra = []
+[functions]
+# Call targets the 2026-11-03 boot test (120 guest s, into gameplay) reached untranslated.
+extra = [0x0C081476,  # 181,621 calls, the hottest code the run interpreted
+         0x0C081E56,  # 15,368
+         0x0C0854A0,  # 26
+         0x0C086B74,  # 1
+         0x0C161046,  # 1
+         0x0C161050,  # 1
+         0x0C16112E,  # 1
+         0x0C16114A]  # 1
+
+# Exception and interrupt stubs the startup copies below the program. VBR = 0x8C00F400: 0x100 and
+# 0x400 hold copies of one stub, 0x600 the interrupt stub (each run through the interpreter on
+# every interrupt, 47,181 times in the boot test). Like SA-nx's, stubs can patch their own
+# literal pool, so every literal is read at run time (no_fold).
+[[relocations]]
+source = 0x0C16BC14
+size = 0x34
+dest = 0x8C00F400
+no_fold = true
+
+[[relocations]]
+source = 0x0C16BB80
+size = 0x34
+dest = 0x8C00F500
+no_fold = true
+
+[[relocations]]
+source = 0x0C16BB80
+size = 0x34
+dest = 0x8C00F800
+no_fold = true
+
+[[relocations]]
+source = 0x0C16BBB8
+size = 0x58
+dest = 0x8C00FA00
+no_fold = true
+
+# Other run-time copies the 2026-11-03 boot test found (exact byte matches).
+[[relocations]]
+source = 0x0C010100
+size = 0xE04
+dest = 0x8C004000
+
+[[relocations]]
+source = 0x0C010F0C
+size = 0x30F4
+dest = 0x8C004E0C
+
+[[relocations]]
+source = 0x0C0D2978
+size = 0xB4
+dest = 0x8C00EB90
+
+[[relocations]]
+source = 0x0C0D2888
+size = 0xF0
+dest = 0x8C00EC44
+
+[[relocations]]
+source = 0x0C0D27D4
+size = 0x60
+dest = 0x8C00ED34
+
+[[relocations]]
+source = 0x0C0D3EF4
+size = 0x3C
+dest = 0x8C00EEB8
+
+[[relocations]]
+source = 0x0C0D3EF4
+size = 0x60
+dest = 0x8C00EF70
+
+[[relocations]]
+source = 0x0C0D3DA8
+size = 0xD0
+dest = 0x8C00F024
+
+[[relocations]]
+source = 0x0C089B6C
+size = 0xE0
+dest = 0x8C00F720
