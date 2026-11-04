@@ -18,6 +18,8 @@ $a = @('--config', $GameToml, '--max-seconds', $Seconds,
 $a += @('--boot-sr', '0x600000F1')
 # Memory card: created blank on first run, kept between runs (out\saves\<game>_vmu_A1.bin).
 $a += @('--vmu', $VmuFile)
+# Port menu options (frame pacing, FPS counter) and a timing line every five seconds in the log.
+$a += @('--options', $OptionsFile, '--perf-log')
 if (-not $Headless) { $a += '--window' }
 Write-Host "Booting $GameId for up to $Seconds game seconds (more in real time while it runs slow) ..."
 $rc = Invoke-Logged $GameExe $a 'boot' '^frame'

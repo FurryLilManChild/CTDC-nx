@@ -2,6 +2,23 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-03: play test 1, the speed is there, the frames are not shown
+
+- Play test with the seeds and stubs from the boot test: 483 guest s in 485 s of wall time
+  (full speed; the report rounds it down to 0.9x). Untranslated calls 291,383 down to 2, the
+  audio stretcher padding 0.3% of the sound instead of 11%.
+- The game thread has room: 13.5% of its samples asleep in pacing (ZwDelayExecution).
+- Why it still did not look smooth: 27,887 frames drawn, 16,713 presented. The game draws about
+  58 a second, the window showed about 35. SA-nx's "smooth" pacing (patch 0022, options.pacing 0)
+  leaves the last finished frame up whenever the render thread is still drawing; for a 60 fps
+  game that drops about four frames in ten, unevenly.
+- Change, scripts only (no rebuild): play and boot test pass `--options` with a per-game options
+  file created as PACING=latency plus SHOW_FPS=1, and `--perf-log` for five-second timing lines.
+- For the Switch later: `fn_0c1582a0` (the wait loop sp00nznet's recomp hangs in) is 9.5% of
+  the game thread, and C++ unwinding (`_NLG_Return2`) 15%: an idle skip candidate, like SA1's.
+- Left for the next build: relocation 0x0C0D2C6C (0x1D8) -> 0x8C00EE3C from suggested.toml, and
+  0x8C00FA20 (an entry inside the 0x8C00FA00 stub), each reached once.
+
 ## 2026-11-03: first boot test, playable
 
 - First PC build and boot test (120 guest s): boots straight through to gameplay, Mark played a

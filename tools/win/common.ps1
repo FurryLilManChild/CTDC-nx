@@ -17,6 +17,14 @@ New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
 $SaveDir = Join-Path $Root 'out\saves'
 $VmuFile = Join-Path $SaveDir "${GameId}_vmu_A1.bin"
 New-Item -ItemType Directory -Force -Path $SaveDir | Out-Null
+# The port menu's options (F1 opens it), kept between runs. Created on first use with low-latency
+# frame pacing and the FPS counter on. SA-nx's "smooth" pacing keeps the last frame up whenever the
+# render thread is still drawing; that suits a 30 fps game, but Crazy Taxi draws about 58 frames a
+# second and smooth pacing showed only 35 of them (play test 2026-11-03).
+$OptionsFile = Join-Path $SaveDir "${GameId}_options.txt"
+if (-not (Test-Path $OptionsFile)) {
+    [IO.File]::WriteAllText($OptionsFile, "PACING=latency`r`nSHOW_FPS=1`r`n", (New-Object Text.UTF8Encoding $false))
+}
 
 # The diagnostic build (build_pc.ps1 -Trace, trace_run.ps1) lives in its own folder.
 function Use-TraceBuild {

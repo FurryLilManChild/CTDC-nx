@@ -13,6 +13,8 @@ $a = @('--config', $GameToml, '--window',
 $a += @('--boot-sr', '0x600000F1')
 # Memory card: created blank on first run, kept between runs (out\saves\<game>_vmu_A1.bin).
 $a += @('--vmu', $VmuFile)
+# Port menu options (frame pacing, FPS counter) and a timing line every five seconds in the log.
+$a += @('--options', $OptionsFile, '--perf-log')
 # Sampling profiler: a small speed cost (not yet measured), writes its report when the window closes (naming the
 # functions reads the debug symbols, so closing can take a little longer than usual).
 $a += @('--profile', (Join-Path $LogDir 'profile.txt'))
