@@ -2,6 +2,21 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: stock clocks, step 2 (switch-test9)
+
+- Patch 0029, FP-mode copies (translator EmitOptions::fp_mode_copies, on by default,
+  `--no-fp-mode-copies` to turn it off). A function whose entry FPSCR.PR or SZ is unknown (only
+  reached through pointers, or callers disagree) tested that bit at every FP instruction (Crazy
+  Taxi: 25,710 runtime branches). Such a body is now also emitted once per possible mode with the
+  mode known, and the plain entry picks the copy once from FPSCR. Only bits the body actually
+  tests are split. Resumes keep the generic body. Crazy Taxi: 1,192 functions copied (the vertex
+  loop fn_0c081200 among them, 4 copies), generated C++ about 126 MB (45 MB before).
+- Tests: dream_emit_tests and dream_translator_tests pass. New differential test
+  translator.fp_mode_copies (tests/sh4/fp_mode_copies.py): p5_fpu and p7_fpuedge translated with
+  and without copies, run from all four PR/SZ entry modes, final context and memory identical in
+  all 8 runs (and the modes do give different results, so each copy is exercised).
+- Expected gain at stock: a guess of 3 to 8%.
+
 ## 2026-11-04: stock clocks, step 1 (switch-test8)
 
 - test6 profile, slow stretches (12,588 samples, mostly stock): no wait left. Self time: guest
