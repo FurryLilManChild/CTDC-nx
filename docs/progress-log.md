@@ -2,6 +2,30 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: switch-test5 results; switch-test6
+
+- switch-test5: the idle skip works, skipping 46 to 76% of guest time in play (about half).
+  GPU and memory at stock from just before play; CPU 1785, then stock (1428 on Mark's console),
+  then 1785. Play: 29 to 55 fps, 0.48x to 0.93x. The first 1785 stretch was the slowest, which
+  the clocks do not explain (same clocks as the last, fastest one); probably what was on screen.
+- test5 profile (51,644 samples below 0.95x): condition-variable wait 29.5% (the low-latency
+  wait for the render thread at VBlank, render thread itself about 30% busy, GPU 1.2 to 1.5 ms a
+  render); SD card reads through fread from the CHD reader about 6% (svcSendSyncRequest under
+  fsdev_read) plus CHD hunk decompression, both on the game thread; swapchain IPC about 2.5%.
+- Patch 0027:
+  - no-wait present: with menus closed and the GPU present path, a refresh does not wait for
+    the render in flight; the window's GPU copy shows the newest submitted frame. Every frame is
+    shown once, one refresh late. Waits as before in menus, on the CPU present path, after a
+    render-target switch, or with the CTDC_WAIT environment variable. Logged as "pacing: N
+    refreshes did not wait for the render in flight".
+  - a mutex on the Vulkan queue around every vkQueueSubmit, vkQueuePresentKHR, vkQueueWaitIdle
+    and vkDeviceWaitIdle: render thread and game thread can now both submit.
+  - CHD reader: hunks read and decompressed by a worker thread, 24 hunks ahead, 2,048 kept;
+    the game thread only copies sectors (and waits when the worker is behind). Pinned to core 2
+    through `dream::gdrom::on_worker_thread` ("disc").
+- switch-test6: 80 steps, sha256 9ff91c750eb9f7b467bae231c22e8089a928c751105caa360640283e11413a66,
+  renderer in, verified on Mark's PC.
+
 ## 2026-11-04: switch-test5, low latency only and the wait-loop skip
 
 - Patch 0026: frame pacing fixed at low latency (Mark: a 60 fps arcade game shows every frame;

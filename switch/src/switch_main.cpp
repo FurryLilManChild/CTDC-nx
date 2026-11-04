@@ -582,8 +582,8 @@ int main(int argc, char** argv) {
     // thread and the profiler.
     dream_port_on_thread = [](const char* name) {
         int core = -1;
-        if (!std::strcmp(name, "aica"))
-            core = 2;
+        if (!std::strcmp(name, "aica") || !std::strcmp(name, "disc"))
+            core = 2;  // CTDC-nx: the CHD decompressor shares the sound processor's core
         else if (!std::strcmp(name, "render"))
             core = 0;
         if (core < 0)
