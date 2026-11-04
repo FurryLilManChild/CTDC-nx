@@ -2,6 +2,20 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: switch-test9 results
+
+- Log matched to test9 by module size (0x4506000, about 72 MB).
+- Stock (1020 MHz), stretches with the game thread at 89% or more (16 readings): 0.79x to 0.98x,
+  about 0.90x average (test8 about 0.79x, test7 about 0.68x). Different parts of a round, so
+  approximate; the lowest reading rose from 0.67x to 0.79x. Mark: gains felt.
+- 1785 MHz: 1.00x throughout, game thread 51 to 69% busy (test8 68 to 78%).
+- No crash; menu opened during play.
+- Profile, slow stretches (16,165 samples, test9 ELF): the pr0sz0 copies are the ones running.
+  Guest memory inline about 34%, TA and store-queue path about 11%, ftrv 4.1%,
+  svcSendSyncRequest 4.4%, C++ exception unwinding (execute_cfa_program_generic,
+  uw_update_context_1) 2.1%: non-local returns thrown during play. Thread-local reads
+  (__aarch64_read_tp 1.9%, take_entry_pr 1.1%) and Memory::fast_view 1.7% also show.
+
 ## 2026-11-04: switch-test8 results
 
 - Log matched to test8 by module size (0x244F000, about 38 MB); the previous log was test7
