@@ -9,7 +9,9 @@ Newest first. One entry per session, with evidence: what broke, the cause, the f
   fixed index 7, which with Crazy Taxi's argument list fell between `--vmu` and its file name.
   Fix: append it. Claude's porting bug, not a runtime problem.
 - switch-test2: 3 build steps, sha256
-  6bd6f8b08c4b273fa657573b482a9694a3616fefc1739ac2044ca69bc9dbe880.
+  6bd6f8b08c4b273fa657573b482a9694a3616fefc1739ac2044ca69bc9dbe880. Its first delivery never
+  reached the PC (the bridge kept test1's file while reporting it written), so Mark's second run
+  was test1 again: the same log. Re-sent under a new name and verified by hash on the PC.
 
 ## 2026-11-03: Switch layer, first NRO (switch-test1)
 

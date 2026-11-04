@@ -67,6 +67,10 @@ fails. The cloud needs `games/crazytaxi/extracted/fs/1ST_READ.BIN` (stage it fro
 Deliver the NRO and toml to `C:\CTDC-nx\out\sd\switch\crazytaxi\` through the bridge; the
 disc, 1ST_READ.BIN and the memory card can be copied there on the bridge too (or by
 `tools\win\stage_switch.ps1`). Keep `out/crazytaxi-switch.elf` of every build sent (crash offsets).
+After every delivery, check the NRO's sha256 on Mark's PC through the bridge. switch-test2's
+first delivery (device_commit_files from the same staged path as test1) reported "written" but
+left test1's file in place, and Mark tested the old build. Stage each build under a new name
+(`crazytaxi-testN.nro`), commit it to `out\sd\switch\testN\`, verify, then copy it over.
 
 ## The loop (PC phase)
 
