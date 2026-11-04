@@ -61,8 +61,6 @@ source = 0x0C16BBB8
 size = 0x58
 dest = 0x8C00FA00
 no_fold = true
-# Play test 2026-11-03: the stub also jumps to 0x20 into itself.
-entries = [0x8C00FA00, 0x8C00FA20]
 
 # Other run-time copies the 2026-11-03 boot test found (exact byte matches).
 [[relocations]]
@@ -109,14 +107,3 @@ dest = 0x8C00F024
 source = 0x0C089B6C
 size = 0xE0
 dest = 0x8C00F720
-
-# Play tests 2026-11-03: two more copies, each reached once.
-[[relocations]]
-source = 0x0C0D2C6C
-size = 0x1D8
-dest = 0x8C00EE3C
-
-[[relocations]]
-source = 0x0C0D3DB8
-size = 0x40
-dest = 0x8C00F0F4

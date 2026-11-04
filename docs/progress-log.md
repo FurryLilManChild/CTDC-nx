@@ -2,6 +2,20 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-03: switch-test3 ran and faulted at once; switch-test4
+
+- switch-test3, the first Switch build with the renderer: the launcher, NVK (Tegra X1 GM20B),
+  the sound thread and the clocks all came up, then the game faulted after 0.016 guest s
+  (3.1M cycles, no interrupts yet): a call to 0x00000000 from 0x0C00FA40, inside the
+  0x8C00FA00 interrupt stub.
+- That stub was changed after the last PC test (`entries = [0x8C00FA00, 0x8C00FA20]`), along
+  with two new copied-code relocations, and none of it was ever run on PC. Not proven which of
+  the three, but they are the only difference from play test 2's config, which boots and plays.
+- switch-test4: crazytaxi.toml back to play test 2's (commit 4c037da). NRO sha256
+  402523a893baa634ecd2f19c23317bc8964f4566cb2c96f00160b8ba5c0a0134, toml
+  871af52d39fd214a426f1e2183c776510b8d3fe693384db2be3e2c04cb5c1e6a, both verified on the PC.
+- Rule: no config change goes into a Switch build before a PC run has played with it.
+
 ## 2026-11-03: switch-test2 had no renderer; switch-test3
 
 - switch-test2 started the launcher with the right arguments, then stopped: "this build has no
