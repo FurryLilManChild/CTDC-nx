@@ -1,0 +1,27 @@
+# Crazy Taxi, MK-51035 V1.004 (1999-12-19), USA
+# Written by `dcdisc new-game`, then edited by hand. Everything here is read off the disc or is
+# the standard Katana layout; nothing from the disc itself is ever committed.
+
+[game]
+id = "crazytaxi"
+title = "Crazy Taxi"
+region = "USA"
+product = "MK-51035"
+
+[disc]
+image = "../../assets/Crazy Taxi (USA).chd"
+
+[binary]
+path = "extracted/fs/1ST_READ.BIN"
+load_address = 0x8C010000    # where the console's BIOS loads the file
+link_address = 0x0C010000    # the same RAM through a different address; what the code assumes
+entry = 0x8C010000           # the first instruction
+
+# No code files besides 1ST_READ.BIN: `dcdisc scan` found SH-4 code in nothing else on the disc
+# (2026-11-03), and there is no movie player. If a boot report shows untranslated calls far
+# from the main program, that is the first place to look again.
+
+# Addresses discovery does not reach, and regions the program copies and runs elsewhere, both go
+# here. Run the launcher with --suggest-config FILE and it writes them for you.
+# [functions]
+# extra = []
