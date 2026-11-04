@@ -2,6 +2,17 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: switch-test5, low latency only and the wait-loop skip
+
+- Patch 0026: frame pacing fixed at low latency (Mark: a 60 fps arcade game shows every frame;
+  no smooth option). The port menu row is hidden, an options file cannot turn smooth back on,
+  and the menu banner reads CRAZY TAXI.
+- `--idle-skip 0x0C156C30:0x0C158400,0x0C158440` in the Switch launcher and the PC scripts:
+  the empty function the wait loop calls, from its two call sites (return address = jsr + 4).
+  `enable_idle_skip` refuses anything that is not `rts; nop`, so a wrong address stops at start.
+- switch-test5: 79 steps, sha256 484e38ca662362b28cb733a27173313a903e3a5ed8834aae8f007634f70dcd5e,
+  renderer in, verified on Mark's PC. toml unchanged from test4.
+
 ## 2026-11-04: switch-test4 boots and plays, slow
 
 - Boots to gameplay on the Switch, CPU 1785 MHz the whole run (stock not tried). Mark: low

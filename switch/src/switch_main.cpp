@@ -605,10 +605,12 @@ int main(int argc, char** argv) {
 #endif
 
     g_args = {"crazytaxi", "--config", "crazytaxi.toml", "--window", "--boot-sr", "0x600000F1",
-              "--vmu", "save/vmu_A1.bin", "--options", "crazytaxi_options.txt"};
-    // SA-nx's --idle-skip and --play-modules are Sonic Adventure's addresses and module words,
-    // so they are not passed here. Crazy Taxi's own wait loop (fn_0c1582a0, 9.5% of the game
-    // thread on PC) is the first candidate once a Switch profile confirms it.
+              "--vmu", "save/vmu_A1.bin", "--options", "crazytaxi_options.txt",
+              // The game's wait loop (0x0C1583F8 and 0x0C158438, in fn_0c1582a0) calls the empty
+              // function at 0x0C156C30 (rts; nop) through a pointer until an interrupt clears a
+              // flag: about a third of the game thread in switch-test4's slow stretches. The
+              // clock jumps to the next event instead. Return addresses are the jsr plus 4.
+              "--idle-skip", "0x0C156C30:0x0C158400,0x0C158440"};
 #ifndef CTDC_RELEASE
     // Development builds write the end-of-run report (untranslated call targets, device
     // counters). A release leaves it out: building it took about a minute after quitting, even

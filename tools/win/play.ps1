@@ -15,6 +15,9 @@ $a += @('--boot-sr', '0x600000F1')
 $a += @('--vmu', $VmuFile)
 # Port menu options (frame pacing, FPS counter) and a timing line every five seconds in the log.
 $a += @('--options', $OptionsFile, '--perf-log')
+# The game's wait loop calls an empty function until an interrupt; jump the clock instead
+# (switch_main.cpp has the details). Crazy Taxi 1 addresses only.
+if ($GameId -eq 'crazytaxi') { $a += @('--idle-skip', '0x0C156C30:0x0C158400,0x0C158440') }
 # Sampling profiler: a small speed cost (not yet measured), writes its report when the window closes (naming the
 # functions reads the debug symbols, so closing can take a little longer than usual).
 $a += @('--profile', (Join-Path $LogDir 'profile.txt'))

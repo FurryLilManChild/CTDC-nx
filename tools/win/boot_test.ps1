@@ -20,6 +20,9 @@ $a += @('--boot-sr', '0x600000F1')
 $a += @('--vmu', $VmuFile)
 # Port menu options (frame pacing, FPS counter) and a timing line every five seconds in the log.
 $a += @('--options', $OptionsFile, '--perf-log')
+# The game's wait loop calls an empty function until an interrupt; jump the clock instead
+# (switch_main.cpp has the details). Crazy Taxi 1 addresses only.
+if ($GameId -eq 'crazytaxi') { $a += @('--idle-skip', '0x0C156C30:0x0C158400,0x0C158440') }
 if (-not $Headless) { $a += '--window' }
 Write-Host "Booting $GameId for up to $Seconds game seconds (more in real time while it runs slow) ..."
 $rc = Invoke-Logged $GameExe $a 'boot' '^frame'

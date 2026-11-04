@@ -23,7 +23,7 @@ New-Item -ItemType Directory -Force -Path $SaveDir | Out-Null
 # second and smooth pacing showed only 35 of them (play test 2026-11-03).
 $OptionsFile = Join-Path $SaveDir "${GameId}_options.txt"
 if (-not (Test-Path $OptionsFile)) {
-    [IO.File]::WriteAllText($OptionsFile, "PACING=latency`r`nSHOW_FPS=1`r`n", (New-Object Text.UTF8Encoding $false))
+    [IO.File]::WriteAllText($OptionsFile, "SHOW_FPS=1`r`n", (New-Object Text.UTF8Encoding $false))
 }
 
 # The diagnostic build (build_pc.ps1 -Trace, trace_run.ps1) lives in its own folder.
