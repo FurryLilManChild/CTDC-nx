@@ -14,12 +14,12 @@
 # Both are what ghcr.io/danfromtico/switch-dev-legacy-vulkan (MIT) holds; switch/docker_build.sh
 # runs this script inside that image.
 #   JOBS        parallel compile jobs (default: by free memory, at most nproc)
-#   PARTS       translation units the game's C++ is split into (default 8)
+#   PARTS       translation units the game's C++ is split into (default 24; 8 ran out of memory in the cloud once FP-mode copies made the code 2.8x larger)
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export DEVKITPRO="${DEVKITPRO:-/opt/devkitpro}"
 NVK_SDK="${NVK_SDK:-$DEVKITPRO/portlibs/switch}"
-PARTS="${PARTS:-8}"
+PARTS="${PARTS:-24}"
 HOST="$REPO/out/build-host"
 BUILD="$REPO/out/build-switch"
 SD="$REPO/out/sd/switch/crazytaxi"

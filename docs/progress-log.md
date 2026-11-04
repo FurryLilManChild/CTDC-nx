@@ -16,6 +16,14 @@ Newest first. One entry per session, with evidence: what broke, the cause, the f
   and without copies, run from all four PR/SZ entry modes, final context and memory identical in
   all 8 runs (and the modes do give different results, so each copy is exercised).
 - Expected gain at stock: a guess of 3 to 8%.
+- First build: the assembler was killed for lack of memory on part 1 (8 parts, about 16 MB of C++
+  each, two at a time in 7 GB). Rebuilt with 24 parts; build.sh now defaults to 24.
+- switch-test9: NRO 71,637,972 bytes (test8: 37,333,972), sha256
+  423b04c1700ee9cae54ef4a52bb92725a094d6bb308d9136f33fe9f530f9e1e1, verified on Mark's PC in
+  out\sd\switch\test9 and copied over to out\sd\switch\crazytaxi. 3,906 copy bodies linked
+  (fn_0c081200 has all four). Renderer strings present, launcher args unchanged. ELF kept as
+  out/crazytaxi-switch-test9.elf. Risk: code size about doubled, which may cost instruction
+  cache and eat into the gain.
 
 ## 2026-11-04: stock clocks, step 1 (switch-test8)
 

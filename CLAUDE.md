@@ -72,8 +72,9 @@ After every delivery, check the NRO's sha256 on Mark's PC through the bridge. sw
 first delivery (device_commit_files from the same staged path as test1) reported "written" but
 left test1's file in place, and Mark tested the old build. Stage each build under a new name
 (`crazytaxi-testN.nro`), commit it to `out\sd\switch\testN\` (large files: SendUserFile first, then commit by its
-fileUuid), verify, then copy it over. A Switch NRO with the renderer is about 34 MB; 19 MB means
-it was left out.
+fileUuid), verify, then copy it over. Without the renderer an NRO is about 15 MB smaller than the last good build (test1: 19 MB versus 34 MB);
+check for renderer strings, not just the size. From test9 (FP-mode copies) an NRO is about 72 MB. The
+game code is built in 24 parts: 8 parts ran out of memory in the 7 GB cloud workspace.
 
 ## The loop (PC phase)
 
