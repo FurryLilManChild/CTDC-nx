@@ -30,7 +30,6 @@ Newest first. One entry per session, with evidence: what broke, the cause, the f
 - switch-test4: crazytaxi.toml back to play test 2's (commit 4c037da). NRO sha256
   402523a893baa634ecd2f19c23317bc8964f4566cb2c96f00160b8ba5c0a0134, toml
   871af52d39fd214a426f1e2183c776510b8d3fe693384db2be3e2c04cb5c1e6a, both verified on the PC.
-- Rule: no config change goes into a Switch build before a PC run has played with it.
 
 ## 2026-11-03: switch-test2 had no renderer; switch-test3
 
