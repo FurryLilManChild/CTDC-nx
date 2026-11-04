@@ -2,6 +2,21 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: coverage run 1 (switch-test10)
+
+- Mark ran the full checklist (Arcade and Original with every rule, Crazy Box, Options, Save &
+  Load, Records, idle title, port menu) in one launch: 386 s of guest time, 1224 MHz, later
+  1581 MHz. Log: clean exit, no crash file.
+- Report: untranslated call targets still only the two known ones (0x8c00fa20, 0xac005990);
+  unmapped accesses 0; textures 2,149 decoded, 0 failed; audio 0 dropped blocks; memory card 222
+  block reads and 400 block writes (the card was found formatted at start, i.e. kept from earlier
+  runs). The candidate relocation 0x8c00ee3c (0x0C0D2C6C, 0x21C) is the one that faulted in
+  test3 when added with entries; not added.
+- 80 perf readings, 11 below 0.95x; the lowest (0.72x to 0.82x) have the game thread under 90%
+  busy, so they are not CPU-bound play (loading or mode changes, not yet tied down).
+- Only one launch in the logs (the previous log is test10's speed run), so the relaunch-and-load
+  check is not in them.
+
 ## 2026-11-04: performance paused; coverage testing next
 
 - Mark: move on to coverage testing (stock about 0.90x in heavy play, 1224 MHz about full
