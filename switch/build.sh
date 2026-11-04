@@ -36,7 +36,9 @@ fail() { echo "error: $*" >&2; exit 1; }
 STAMP="$REPO/out/dream-patches-switch.stamp"
 mkdir -p "$REPO/out"
 want=$(cat "$REPO"/patches/dream-recomp/*.patch | sha256sum | cut -d' ' -f1)
-if [ "$(cat "$STAMP" 2>/dev/null)" != "$want" ]; then
+# A matching stamp is not enough: a submodule reset behind the script's back leaves the stamp
+# right and the tree clean (CTDC-nx switch-test8's first build ran on unpatched sources).
+if [ "$(cat "$STAMP" 2>/dev/null)" != "$want" ] || git -C "$REPO/dream-recomp" diff --quiet; then
     echo "applying dream-recomp patches ..."
     git -C "$REPO/dream-recomp" checkout -q -- .
     git -C "$REPO/dream-recomp" clean -fdq

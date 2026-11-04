@@ -2,6 +2,20 @@
 # adding a directory. Add BOOT_TEST once the title boots far enough to be worth asserting on.
 dream_add_game(crazytaxi TITLE "Crazy Taxi")
 
+# CTDC-nx (switch-test8): all of the game's translated code at the compiler's full optimisation
+# (dream-recomp builds it at -O1 to keep big games' builds short). Crazy Taxi's main program is
+# 1.4 MB, so the whole game builds in minutes either way. SA-nx saw no gain from -O2 on its hot
+# units; Crazy Taxi's hottest code is a floating-point vertex loop (fn_0c081200, 23% of the game
+# thread in switch-test6's slow stretches), where it may matter more. -fno-strict-aliasing because
+# translated code reads guest memory through casts that -O2 would otherwise be entitled to reorder.
+if(NOT MSVC)
+  set(_ctdc_units ${CMAKE_CURRENT_BINARY_DIR}/gen/crazytaxi.cpp)
+  foreach(_k RANGE 1 32)
+    list(APPEND _ctdc_units ${CMAKE_CURRENT_BINARY_DIR}/gen/crazytaxi_part${_k}.cpp)
+  endforeach()
+  set_source_files_properties(${_ctdc_units} PROPERTIES COMPILE_OPTIONS "-O2;-fno-strict-aliasing")
+endif()
+
 # Every guest call, and every jump between translated functions, is a host call. Windows gives the
 # main thread 1 MB of stack, which SA-nx overflowed in play (0xC00000FD). 256 MB, reserved not
 # committed, so it costs nothing unless used.

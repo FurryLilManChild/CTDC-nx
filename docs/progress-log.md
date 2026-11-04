@@ -2,6 +2,23 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: stock clocks, step 1 (switch-test8)
+
+- test6 profile, slow stretches (12,588 samples, mostly stock): no wait left. Self time: guest
+  memory access inline code (gld, fast_area, gst) about 28%, FP helpers about 11% (ftrv 7.6%,
+  double-precision accumulation), the vertex loop fn_0c081200 itself about 23% of samples, TA
+  and store-queue path about 8%, swapchain IPC on the game thread about 4%. Stack-walk inclusive
+  numbers are unreliable for translated code (frames without records); self numbers are used.
+- Stock (1020 MHz) ran 0.63x to 0.75x: needs about 35 to 45% less game-thread work.
+- switch-test8: every translated unit at -O2 -fno-strict-aliasing (games/crazytaxi/CMakeLists.txt;
+  dream-recomp builds them at -O1). SA-nx saw nothing from -O2; Crazy Taxi's hot code is an FP
+  loop. NRO 37,333,972 bytes, sha256
+  d817f4569daf5397b42fb24bc508ea860f02024acf7c521d990615c366020e08, verified on Mark's PC. Includes
+  test7's menu fix.
+- build.sh: re-apply the patch set when the submodule tree is clean even if the stamp matches
+  (test8's first build ran on unpatched sources after a manual submodule reset and failed).
+- Next candidate: FP registers in host locals (checklist item 4).
+
 ## 2026-11-04: switch-test6 full speed at 1785 MHz; menu crash; switch-test7
 
 - switch-test6 at 1785 MHz: 58.8 to 60.1 fps shown at 0.98x to 1.00x through most of play
