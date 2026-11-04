@@ -2,6 +2,17 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-03: play test 2, smooth; ready for the Switch
+
+- Low-latency pacing: 59.4 to 59.9 fps shown in play at 0.97x to 1.00x, every rendered frame
+  presented. Mark: "felt great". Lowest five seconds: 56.7 fps at 0.94x, with the game thread at
+  74% plus 15% sound and no sleep left. The Switch will need SA-nx's speed work (sound thread,
+  idle skip, translator options).
+- Mark: coverage testing (all modes) on the Switch rather than on PC.
+- Trigger ramp off by default (patch 0024, Mark's call): a digital trigger is fully down at once.
+  Still a row in the controls menu. Analogue triggers were never ramped.
+- Config: the last two run-time copies and the entry 0x20 into the 0x8C00FA00 stub.
+
 ## 2026-11-03: play test 1, the speed is there, the frames are not shown
 
 - Play test with the seeds and stubs from the boot test: 483 guest s in 485 s of wall time
