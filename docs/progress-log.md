@@ -2,6 +2,22 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: switch-test10 results
+
+- Log matched to test10 by module size (0x4559000).
+- Stock, stretches with the game thread at 86% or more (16 readings): 0.82x to 0.98x, about
+  0.90x average. test9 was about 0.90x: no measurable gain from patch 0030.
+- 1224 MHz (Mark's first run at this step): 0.96x to 1.00x, mostly 1.00x, game thread 76 to 93%
+  busy. Mark: basically full speed.
+- Profile, slow stretches, self time by guest function with inlined helpers counted in their
+  function (tools: prof7.py and prof8.py in the scratch area): fn_0c081200 16.7% (test9) and 17.2%
+  (test10) of slow samples, so its cost did not move. Inside it (test10): gst 22.7%, gld 20.6%,
+  fast_area 13.3%, gld_pair 10.9%, ftrv_to 10.9%, its own code 12.5%. The loop is mostly guest
+  memory access (vertex reads from RAM, pair stores into the store queue), not mode tests or FP
+  register traffic. Next by function: fn_0c080e22 7.9%, fn_0c077af0 4.6%, svcSendSyncRequest
+  4.1%, TA path (Ta::feed, resolve, sq_flush) about 9%.
+- No crash.
+
 ## 2026-11-04: stock clocks, step 3 (switch-test10)
 
 - Patch 0030, two translator changes, both on by default:
