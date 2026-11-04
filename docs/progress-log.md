@@ -27,6 +27,11 @@ Newest first. One entry per session, with evidence: what broke, the cause, the f
   (fn_0c0884ec, reached from fn_0c1708a0 and fn_0c17085e) throws on every task switch. The FDE
   cache already exists (switch_main.cpp); avoiding the throw needs another return path through
   every translated frame. Left out.
+- switch-test10: NRO 71,977,940 bytes, sha256
+  2b17c9233d4c721add2b6d5993d17535f98ac899db6625e932adc5a8e41a1a8f, verified on Mark's PC in
+  out\sd\switch\test10 and copied over to out\sd\switch\crazytaxi. 3,906 copy bodies linked
+  (fn_0c081200 all four), renderer strings present, launcher args unchanged. ELF kept as
+  out/crazytaxi-switch-test10.elf. Build: 95 steps, 24 parts, no memory trouble.
 
 ## 2026-11-04: switch-test9 results
 
