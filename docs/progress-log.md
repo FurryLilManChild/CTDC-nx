@@ -2,6 +2,22 @@
 
 Newest first. One entry per session, with evidence: what broke, the cause, the fix.
 
+## 2026-11-04: switch-test4 boots and plays, slow
+
+- Boots to gameplay on the Switch, CPU 1785 MHz the whole run (stock not tried). Mark: low
+  latency looked much better than smooth; for this game there must be no smooth option.
+- Smooth stretch: about 21 fps shown of 42 rendered, 0.64x to 0.79x. Low latency: 34 to 39 fps
+  shown, every render shown, 0.56x to 0.65x, with the game thread waiting for the render thread
+  17 to 20% of the time. Sound thread 20 to 30% of core 2, render thread about 25% of core 0.
+- Profile (56,361 samples below 0.95x, test4 ELF):
+  - about a third of the game thread inside `fn_0c1582a0`, the game's wait loop at 0x0C1583F8,
+    which calls the empty function 0x0C156C30 (`rts; nop`) through a pointer until an interrupt
+    clears a flag. Idle skip candidate: `--idle-skip 0x0C156C30:0x0C158400,0x0C158440`.
+  - about 18% waiting on a condition variable (svcWaitProcessWideKeyAtomic): the low-latency
+    wait for the render thread at VBlank.
+  - the rest spread over guest memory access (gld 9.5%, fast_area 5.8%), call_indirect,
+    take_entry_pr and TLS reads (__aarch64_read_tp 4%).
+
 ## 2026-11-03: switch-test3 ran and faulted at once; switch-test4
 
 - switch-test3, the first Switch build with the renderer: the launcher, NVK (Tegra X1 GM20B),
